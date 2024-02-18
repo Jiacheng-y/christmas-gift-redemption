@@ -1,11 +1,3 @@
-
-/**
- * // delete/modify before submission
- * The Model represents the data and the rules that govern access to and updates of this data. 
- * It responds to requests for information, processes instructions to change its state, 
- * and communicates with the database.
- */
-
 import { Database } from "sqlite3"
 import { model } from "./model"
 import { SQLiteConnection } from "./storage/sqlite-connection"
@@ -34,10 +26,15 @@ export class RedemptionModel {
      * @param team string representing team name
      * @returns array of [staff_pass_id, team_name, redeemed_at]
      */
-    public async getRedemption(team: string): Promise<RedemptionMapping> {
-        const query = `SELECT * FROM redeemed WHERE team_name = ?`
-        let query_result: RedemptionMapping = JSON.parse(String(await this.db.get(query, team)))
-        return query_result
+    public async getRedemption(team: string): Promise<RedemptionMapping|undefined> {
+        try {
+            const query = `SELECT * FROM redeemed WHERE team_name = ?`
+            let query_result: RedemptionMapping = JSON.parse(String(await this.db.get(query, team)))
+            return query_result
+        } catch(e:any) {
+            console.log(e)
+        }
+        
     }
 
     /**
@@ -46,11 +43,16 @@ export class RedemptionModel {
      * @returns true if anyone in the team has already redeemed the gift previously, false otherwise
      */
     public async hasRedeemed(team: string): Promise<boolean> {
-        const query = `SELECT COUNT(1) FROM redeemed WHERE team_name = ?`
-        let query_result: number = parseInt(String(await this.db.get(query, team)))
-        if (query_result > 0) {
-            return true
-        } else {
+        try {
+            const query = `SELECT COUNT(1) FROM redeemed WHERE team_name = ?`
+            let query_result: number = parseInt(String(await this.db.get(query, team)))
+            if (query_result > 0) {
+                return true
+            } else {
+                return false
+            }
+        } catch (e) {
+            console.log(e)
             return false
         }
     }
@@ -61,13 +63,18 @@ export class RedemptionModel {
      * @returns true if new redemption entry is added successfully, false otherwise
      */
     public async addRedemption(staff_id:string, team: string): Promise<boolean> {
-        if (await this.hasRedeemed(team)) {
+        try {
+            if (await this.hasRedeemed(team)) {
+                return false
+            } else {
+                const curr_time: number = new Date().getTime()
+                const query = `INSERT INTO redeemed VALUES(?, ?, ?)`
+                const result = await this.db.run(query, [staff_id, team, curr_time])
+                return true
+            }
+        } catch (e) {
+            console.log(e)
             return false
-        } else {
-            const curr_time: number = new Date().getTime()
-            const query = `INSERT INTO redeemed VALUES(?, ?, ?)`
-            const result = await this.db.run(query, [staff_id, team, curr_time])
-            return true
         }
     }
 }

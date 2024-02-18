@@ -26,10 +26,14 @@ export class StaffModel implements model{
      * @param staff_id unique string representing staff_pass_id
      * @returns returns [staff_pass_id, team_name, created_at] corresponding to given staff_id
      */
-    public async getStaffIDMapping(staff_id: string): Promise<StaffMapping> {
-        const query = `SELECT * FROM teams WHERE staff_pass_id = ?`
-        let query_result: StaffMapping = JSON.parse(String(await this.db.get(query, staff_id)))
-        return query_result
+    public async getStaffIDMapping(staff_id: string): Promise<StaffMapping|undefined> {
+        try {
+            const query = `SELECT * FROM teams WHERE staff_pass_id = ?`
+            let query_result: StaffMapping = JSON.parse(String(await this.db.get(query, staff_id)))
+            return query_result
+        } catch (e) {
+            console.log(e)
+        }
     }
 }
 

@@ -1,10 +1,3 @@
-/**
- * // delete/modify before submission
- * The Controller receives user input and decides what to do with it. 
- * It’s a system that manages the data flow into the model object and updates the view 
- * whenever data changes.
- */
-
 import { RedemptionMapping, RedemptionModel } from "../models/redemption"
 
 export class RedemptionController {
