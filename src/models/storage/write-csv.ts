@@ -1,8 +1,8 @@
 import fs = require("fs");
 import { stringify } from "csv-stringify";
-import { SQLiteConnection } from "./storage/sqlite-connection";
+import { SQLiteConnection } from "./sqlite-connection";
 
-const filename = "redemeption-log.csv";
+const filename: string = "redemeption-log.csv";
 const writableStream = fs.createWriteStream(filename);
 
 const columns = [

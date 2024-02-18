@@ -1,0 +1,7 @@
+
+export class StaffController {
+
+    public getStaffIDMapping(staff: string): Array<string|number> {
+        return []
+    }
+}

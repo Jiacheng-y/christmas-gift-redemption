@@ -1,7 +1,7 @@
 import fs = require("fs")
 import { parse } from "csv-parse"
 
-import { SQLiteConnection } from './storage/sqlite-connection'
+import { SQLiteConnection } from './sqlite-connection'
 
 fs.createReadStream("../../data/staff-id-to-team-mapping-long.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
