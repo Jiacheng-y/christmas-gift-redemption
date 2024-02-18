@@ -4,11 +4,10 @@ import { RedemptionController } from "../redemption-controller";
 import { Command } from "./command";
 
 export class VerifyCommand implements Command {
-    command_index: number
+    command_index: number = 2
     arguments: any[]
 
-    public constructor(command_index:number, team:string) {
-        this.command_index = 2
+    public constructor(team:string) {
         this.arguments = [team]
     }
 

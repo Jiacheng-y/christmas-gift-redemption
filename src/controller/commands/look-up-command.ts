@@ -4,11 +4,10 @@ import { StaffMapping } from "../../models/staff";
 import { RedemptionView } from "../../view/redemption-view";
 
 export class LookUpCommand implements Command {
-    command_index: number
+    command_index: number = 1
     arguments: any[]
 
-    public constructor(command_index:number, staff_id:string) {
-        this.command_index = 1
+    public constructor(staff_id:string) {
         this.arguments = [staff_id]
     }
 
