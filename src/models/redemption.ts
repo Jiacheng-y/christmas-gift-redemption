@@ -45,8 +45,14 @@ export class RedemptionModel {
      * @param team team name of the team redeeming the gift
      * @returns true if anyone in the team has already redeemed the gift previously, false otherwise
      */
-    public hasRedeemed(team: string): boolean {
-        return false
+    public async hasRedeemed(team: string): Promise<boolean> {
+        const query = `SELECT COUNT(1) FROM redeemed WHERE team_name = ?`
+        let query_result: number = parseInt(String(await this.db.get(query, team)))
+        if (query_result > 0) {
+            return true
+        } else {
+            return false
+        }
     }
 
     /**
@@ -54,10 +60,15 @@ export class RedemptionModel {
      * @param team team name of the team redeeming their gift
      * @returns true if new redemption entry is added successfully, false otherwise
      */
-    public addRedemption(team: string): boolean {
-
-        const curr_time: number = new Date().getTime()
-        return false
+    public async addRedemption(staff_id:string, team: string): Promise<boolean> {
+        if (await this.hasRedeemed(team)) {
+            return false
+        } else {
+            const curr_time: number = new Date().getTime()
+            const query = `INSERT INTO redeemed VALUES(?, ?, ?)`
+            const result = await this.db.run(query, [staff_id, team, curr_time])
+            return true
+        }
     }
 }
 
