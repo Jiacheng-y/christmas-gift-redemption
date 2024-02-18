@@ -5,7 +5,7 @@ import { StaffController } from "../staff-controller";
 import { Command } from "./command";
 
 export class AddRedemptionCommand implements Command {
-    command_index: number = 2
+    command_index: number = 3
     arguments: any[]
 
     public constructor(staff_id:string) {

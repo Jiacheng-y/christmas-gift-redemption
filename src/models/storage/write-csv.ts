@@ -4,6 +4,7 @@ import { SQLiteConnection } from "./sqlite-connection";
 
 const filename: string = "redemeption-log.csv";
 const writableStream = fs.createWriteStream(filename);
+const database_connection = SQLiteConnection.createDBConnection()
 
 const columns = [
   "team_name", 
@@ -12,7 +13,7 @@ const columns = [
 ];
 
 const stringifier = stringify({ header: true, columns: columns });
-SQLiteConnection.db.each(`select * from redeemed`, (error: Error, row: Array<any>) => {
+database_connection.getDatabase().each(`select * from redeemed`, (error: Error, row: Array<any>) => {
   if (error) {
     return console.log(error.message);
   }
