@@ -5,24 +5,25 @@ import { Database } from "sqlite3";
 import { DBConnection } from "./db-connection";
 
 export class SQLiteConnection implements DBConnection {
-  static db: Database
+  private db: Database
+  private static db_connection: DBConnection
 
   private constructor(path: string) {
-    SQLiteConnection.db = this.connectToDatabase(path)
+    this.db = this.connectToDatabase(path)
   }
 
-  public static createDBConnection(): Database {
+  public static createDBConnection(): DBConnection {
     const filepath: string = "./redemption.db"
-    if (SQLiteConnection.db != null) {
-      return SQLiteConnection.db
+    if (SQLiteConnection.db_connection != null) {
+      return SQLiteConnection.db_connection
     } else { 
-      new SQLiteConnection(filepath)
-      return SQLiteConnection.db
+      SQLiteConnection.db_connection = new SQLiteConnection(filepath)
+      return SQLiteConnection.db_connection
     }
   }
 
   public getDatabase(): Database {
-    return SQLiteConnection.createDBConnection()
+    return this.db
   }
 
   connectToDatabase (filepath: string) {

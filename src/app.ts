@@ -2,7 +2,7 @@
 
 import * as express from 'express'
 
-class app {
+class App {
   public express
 
   constructor () {
@@ -21,4 +21,4 @@ class app {
   }
 }
 
-export default new app().express
+export default new App().express

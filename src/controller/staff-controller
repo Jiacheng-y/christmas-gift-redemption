@@ -1,7 +1,17 @@
+import { StaffMapping, StaffModel } from "../models/staff"
 
 export class StaffController {
+    staffModel: StaffModel
 
-    public getStaffIDMapping(staff: string): Array<string|number> {
-        return []
+    private constructor() {
+        this.staffModel = StaffModel.createStaffModel() as StaffModel
+    }
+
+    public async getStaffIDMapping(staff_id: string): Promise<StaffMapping|undefined> {
+        try {
+            return await this.staffModel.getStaffIDMapping(staff_id)
+        } catch (e: unknown) {
+            console.log(e)
+        }
     }
 }
