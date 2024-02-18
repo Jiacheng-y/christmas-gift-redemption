@@ -12,10 +12,10 @@ export class LookUpCommand implements Command {
         this.arguments = [staff_id]
     }
 
-    public execute() {
+    public async execute() {
         const controller:StaffController = new StaffController()
         try {
-            const response:StaffMapping = controller.getStaffIDMapping(this.arguments[0])
+            const response:StaffMapping = await controller.getStaffIDMapping(this.arguments[0])
             const view:RedemptionView = new RedemptionView()
             view.lookup_response(response.staff_pass_id, response.team_name, response.created_at)
         } catch (e) {
