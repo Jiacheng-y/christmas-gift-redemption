@@ -1,17 +1,24 @@
+import { response } from "express"
 import { StaffMapping, StaffModel } from "../models/staff"
 
 export class StaffController {
     staffModel: StaffModel
 
-    private constructor() {
+    public constructor() {
         this.staffModel = StaffModel.createStaffModel() as StaffModel
     }
 
-    public async getStaffIDMapping(staff_id: string): Promise<StaffMapping|undefined> {
+    public async getStaffIDMapping(staff_id: string): Promise<StaffMapping> {
         try {
-            return await this.staffModel.getStaffIDMapping(staff_id)
+            const response:StaffMapping|undefined = await this.staffModel.getStaffIDMapping(staff_id)
+            if (response === undefined) {
+                return {staff_pass_id: "", team_name: "", created_at: 0}
+            } else {
+                return response
+            }
         } catch (e: unknown) {
             console.log(e)
+            return {staff_pass_id: "", team_name: "", created_at: 0}
         }
     }
 }

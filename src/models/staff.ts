@@ -33,6 +33,7 @@ export class StaffModel implements model{
             return query_result
         } catch (e) {
             console.log(e)
+            return {staff_pass_id: "", team_name: "", created_at: 0}
         }
     }
 }

@@ -33,6 +33,7 @@ export class RedemptionModel {
             return query_result
         } catch(e:any) {
             console.log(e)
+            return {staff_pass_id: "", team_name: "", redeemed_at: 0}
         }
         
     }
@@ -62,19 +63,19 @@ export class RedemptionModel {
      * @param team team name of the team redeeming their gift
      * @returns true if new redemption entry is added successfully, false otherwise
      */
-    public async addRedemption(staff_id:string, team: string): Promise<boolean> {
+    public async addRedemption(staff_id:string, team: string): Promise<RedemptionMapping> {
         try {
             if (await this.hasRedeemed(team)) {
-                return false
+                return {staff_pass_id: "", team_name: "", redeemed_at: 0}
             } else {
                 const curr_time: number = new Date().getTime()
                 const query = `INSERT INTO redeemed VALUES(?, ?, ?)`
                 const result = await this.db.run(query, [staff_id, team, curr_time])
-                return true
+                return {staff_pass_id: staff_id, team_name: team, redeemed_at: curr_time}
             }
         } catch (e) {
             console.log(e)
-            return false
+            return {staff_pass_id: "", team_name: "", redeemed_at: 0}
         }
     }
 }
